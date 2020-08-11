@@ -43,15 +43,15 @@
             :maxMessageLength="120"
             :chatContainer="'md-app-scroller'">
           </ChatArea> -->
-                  <Video
+                  <!-- <Video
           videoId="localVideo"
           :displayControls="true"
           :videoStream="localStream"
           :pauseVideo="pauseVideo"
           :pauseAudio="pauseAudio"
           :muted="true">
-        </Video>
-
+        </Video> -->
+  <MonacoEditor class="editor" theme="vs-dark" v-model="code" language="javascript" />
         </md-app-content>
       </md-app>
 
@@ -77,13 +77,16 @@ import Conference from "./../components/conference/Conference"
 import { STORE_ACTIONS, WS_EVENTS, DESCRIPTION_TYPE } from "./../utils/config"
 import Video from "./../components/video/Video"
 import { videoConfiguration } from './../mixins/WebRTC'
+import MonacoEditor from 'vue-monaco';
+
 export default {
   name: "chat",
   components: {
     UserList,
     Video,
     MessageArea,
-    Conference
+    Conference,
+    MonacoEditor
   },
    mixins:[videoConfiguration],
   sockets: {
@@ -194,14 +197,15 @@ export default {
         candidate: null,
         open: false,
         userLeft: ''
-      }
+      },
+       code: 'const noop = () => {}'
     }
   },
   async mounted()
   {
-    this.myVideo = document.getElementById("localVideo")
+    //this.myVideo = document.getElementById("localVideo")
     // Admin join the room
-      await this.getUserMedia()
+      //await this.getUserMedia()
       // this.$socket.emit(WS_EVENTS.joinConference, { ...this.$store.state,
       //   to: this.username
       // })
@@ -267,8 +271,11 @@ export default {
 <style lang="scss">
 @import "./../styles/variables";
 .app-body{
-  width: 100vw !important;
+  width: 70vw !important;
   height: 90vh !important;
+}
+.conference{
+  z-index: 2;
 }
 .page-container {
   display: flex;
@@ -276,7 +283,6 @@ export default {
   background-size: 100% 100%;
 
   .chat {
-    flex:1
   }
 
   .md-field {
@@ -371,6 +377,11 @@ export default {
     float: right;
     margin-top: 12px;
   }
+}
+.editor {
+  width: 60vw;
+  height: 800px;
+  text-align: unset;
 }
 </style>
 

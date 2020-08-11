@@ -24,7 +24,7 @@
     </div>
 
     <div class="conference-container__videos">
-      <!-- <div class="video">
+      <div class="video">
         <Video
           videoId="localVideo"
           :displayControls="true"
@@ -33,7 +33,7 @@
           :pauseAudio="pauseAudio"
           :muted="true">
         </Video>
-      </div> -->
+      </div>
       <div class="conference-container__videos--remote">
         <div v-for="(item, key) in peers" :key="key" class="video">
             <Video
