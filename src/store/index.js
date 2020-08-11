@@ -56,18 +56,19 @@ export default new Vuex.Store({
     setRooms({ commit }) {
       return new Promise(async (resolve, reject) => {
         try {
-          // const rooms = await Vue.http.get(`http://${url}/rooms`)
-          const rooms = [{
-              id: 1,
-              name: 'GENERAL'
-            }, {
-              id: 2,
-              name: 'SPORTS'
-            },{
-              id: 3,
-              name: 'GAMES'
-            },
-          ]
+          const resp = await Vue.http.get(`${url}/rooms`)
+          const rooms =resp.body
+          // const rooms = [{
+          //     id: 1,
+          //     name: 'GENERAL'
+          //   }, {
+          //     id: 2,
+          //     name: 'SPORTS'
+          //   },{
+          //     id: 3,
+          //     name: 'GAMES'
+          //   },
+          // ]
           commit(STORE_ACTIONS.setRooms, rooms)
           resolve(rooms)
         } catch (error) {

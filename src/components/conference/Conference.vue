@@ -1,12 +1,12 @@
 <template>
 <div class="conference-container">
     <div class="conference-container__header">
-      <h3>Private conference (up to 3)</h3>
+      <h3>Candidate Interview</h3>
       <md-menu>
         <md-button 
           class="md-icon-button page-container-logout" 
           md-menu-trigger
-          :disabled="peersLength === 2 || users.length === 1"
+          :disabled="peersLength === 3 || users.length === 1"
           v-if="conference.admin">
           <md-icon>group_add</md-icon>
         </md-button>
@@ -24,7 +24,7 @@
     </div>
 
     <div class="conference-container__videos">
-      <div class="video">
+      <!-- <div class="video">
         <Video
           videoId="localVideo"
           :displayControls="true"
@@ -33,7 +33,7 @@
           :pauseAudio="pauseAudio"
           :muted="true">
         </Video>
-      </div>
+      </div> -->
       <div class="conference-container__videos--remote">
         <div v-for="(item, key) in peers" :key="key" class="video">
             <Video

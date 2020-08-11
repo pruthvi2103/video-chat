@@ -1,18 +1,19 @@
 const express = require('express');
 const roomRouter = express.Router();
-
+// simulated room view, rooms are supposed to be empty if there is no roomcreated
+// Rooms can only be created by ADMINS/Recruiters
 const rooms = [
     {
         id: 1,
-        name: 'GENERAL'
+        name: 'INOGIT'
     },
     {
         id: 2,
-        name: 'SPORTS'
+        name: 'GOOGLE'
     },
     {
         id: 3,
-        name: 'GAMES'
+        name: 'FACEBOOK'
     },
 ]
 

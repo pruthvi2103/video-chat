@@ -2,10 +2,10 @@
   <div class="page-container">
     <div class="chat">
 
-      <div class="md-layout-item">
+      <!-- <div class="md-layout-item">
         <md-field>
           <label for="room">Room</label>
-          <md-select v-model="room" @md-selected="onChangeRoom" name="room" id="room">
+          <md-select disabled v-model="room" @md-selected="onChangeRoom" name="room" id="room">
             <md-option
               v-for="room in this.$store.state.rooms"
               :key="room.id"
@@ -13,9 +13,9 @@
             >{{room.name}}</md-option>
           </md-select>
         </md-field>
-      </div>
+      </div> -->
 
-      <md-app md-waterfall md-mode="fixed">
+      <md-app class="app-body" md-waterfall md-mode="fixed">
         <md-app-toolbar class="md-primary">
           <span class="md-title page-container__room">{{room}}</span>
           <md-button 
@@ -38,23 +38,27 @@
         </md-app-drawer>
 
         <md-app-content id="chat-content">
-          <ChatArea 
+          <!-- <ChatArea 
             :messages="messages"
             :maxMessageLength="120"
             :chatContainer="'md-app-scroller'">
-          </ChatArea>
+          </ChatArea> -->
+                  <Video
+          videoId="localVideo"
+          :displayControls="true"
+          :videoStream="localStream"
+          :pauseVideo="pauseVideo"
+          :pauseAudio="pauseAudio"
+          :muted="true">
+        </Video>
+
         </md-app-content>
       </md-app>
 
-      <MessageArea 
+      <!-- <MessageArea 
         @send-message="sendMessage($event)">
-      </MessageArea>
+      </MessageArea> -->
 
-      <ChatDialog 
-        :v-if="openPrivateChat.chat"
-        :showDialog="openPrivateChat" 
-        @close-chat="closePrivateChat()">
-      </ChatDialog>
     </div>
     <div class="conference">
       <Conference
@@ -68,21 +72,20 @@
 
 <script>
 import UserList from "./../components/UserList"
-import ChatArea from "./../components/ChatArea"
 import MessageArea from "./../components/MessageArea"
-import ChatDialog from "./../components/ChatDialog"
 import Conference from "./../components/conference/Conference"
 import { STORE_ACTIONS, WS_EVENTS, DESCRIPTION_TYPE } from "./../utils/config"
-
+import Video from "./../components/video/Video"
+import { videoConfiguration } from './../mixins/WebRTC'
 export default {
   name: "chat",
   components: {
     UserList,
-    ChatArea,
+    Video,
     MessageArea,
-    ChatDialog,
     Conference
   },
+   mixins:[videoConfiguration],
   sockets: {
     newUser: function({users, username}) {
       const isMe = this.$store.state.username === username
@@ -194,6 +197,22 @@ export default {
       }
     }
   },
+  async mounted()
+  {
+    this.myVideo = document.getElementById("localVideo")
+    // Admin join the room
+      await this.getUserMedia()
+      // this.$socket.emit(WS_EVENTS.joinConference, { ...this.$store.state,
+      //   to: this.username
+      // })
+
+    //debugger
+    // Offer
+    if(this.conference.offer) {
+      const { offer: { from, desc } } = this.conference
+      this.init(from, desc)
+    }
+  },
   methods: {
     onChangeRoom(val) {
       if (this.room === val) return
@@ -247,11 +266,13 @@ export default {
 
 <style lang="scss">
 @import "./../styles/variables";
-
+.app-body{
+  width: 100vw !important;
+  height: 90vh !important;
+}
 .page-container {
   display: flex;
   height: 100%;
-  background: url("./../assets/bck.jpg");
   background-size: 100% 100%;
 
   .chat {
@@ -285,13 +306,13 @@ export default {
 
   .md-toolbar.md-theme-default {
     &.md-transparent {
-      background: $secondary_blue;
+      background: #ccc;
       color: white;
       font-size: 17px;
     }
 
     &.md-primary {
-      background-color: $main_blue;
+      background-color: #ccc;
 
       & .md-title {
         font-weight: bold;
@@ -311,17 +332,14 @@ export default {
     width: 85%;
     margin: 0 auto;
     height: 70vh;
-    max-width: 1300px;
 
     & .md-content.md-theme-default {
-      background: url("./../assets/msg_bck.png");
       background-attachment: fixed;
       background-size: 100% 100%;
       border-left: 0;
     }
 
     & .md-layout-column.md-flex.md-theme-default.md-scrollbar{
-        background: url("./../assets/msg_bck.png");
         background-attachment: fixed;
         background-size: 100% 100%;
     }

@@ -1,6 +1,5 @@
 <template>
   <div class="options">
-    <h2>VIDEO CHAT</h2>
     <div>
       <form novalidate class="md-layout" @submit.prevent="submitForm">
         <md-field>
@@ -33,6 +32,10 @@
         </div>
       </form>
     </div>
+    <div class="filler" />
+    <div class="splash-text">
+     <h2>INOGIT INTERVIEW</h2>
+     </div>
   </div>
 </template>
 
@@ -85,7 +88,8 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  flex-direction: column;
+  flex-direction: row;
+  background:#fff;
   & h2 {
     padding-bottom: 4rem;
   }
@@ -102,5 +106,13 @@ export default {
       color: red
     }
   }
+}
+.splash-text{
+  padding: 150px;
+  text-align: center;
+    color: #5F89FF;
+}
+.filler{
+  margin:250px;
 }
 </style>
